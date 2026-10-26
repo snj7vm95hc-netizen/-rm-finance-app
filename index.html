@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="my">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#163d32">
+<title>RM Finance</title>
+<style>
+:root{--green:#163d32;--mint:#c5e8bd;--bg:#f4f7f4;--card:#fff;--text:#17231d;--muted:#68766e;--red:#b94a3d;--line:#e1e8e2}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+main{max-width:680px;margin:auto;padding:16px 14px 40px}.hero{background:var(--green);color:white;border-radius:22px;padding:22px;margin-bottom:14px}.brand{display:flex;align-items:center;gap:10px;font-weight:750;font-size:21px}.wallet{font-size:25px}.eyebrow{font-size:13px;color:#d1e6d8;margin-top:22px}.balance{font-size:32px;font-weight:800;margin:5px 0 18px;word-break:break-word}.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{border-top:1px solid #547568;padding-top:12px}.stat small{display:block;color:#d1e6d8;font-size:12px}.stat strong{display:block;margin-top:5px;font-size:17px}.in{color:#bde9b1}.out{color:#ffd1b9}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:17px;margin-bottom:14px}.card h2{font-size:18px;margin:0 0 14px}.field{margin-bottom:12px}label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}input,select,button{font:inherit}input,select{width:100%;border:1px solid #d5ded7;background:#fff;border-radius:11px;padding:12px;color:var(--text);min-height:45px}button{border:0;border-radius:12px;padding:12px 14px;font-weight:700;cursor:pointer;min-height:44px}.primary{background:var(--green);color:#fff;width:100%}.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:14px}.tab{background:#e8eee9;color:var(--green)}.tab.active{background:var(--green);color:#fff}.row{display:flex;align-items:center;gap:10px}.row>*:first-child{flex:1}.summary-row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;font-size:14px}.summary-row strong{white-space:nowrap}.muted{color:var(--muted);font-size:12px}.progress{height:9px;background:#e6ece7;border-radius:99px;overflow:hidden}.bar{height:100%;background:#34865b;width:0}.item{display:flex;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}.item:last-child{border-bottom:0}.bubble{width:40px;height:40px;border-radius:12px;background:#eef3ef;display:grid;place-items:center;font-size:19px;flex-shrink:0}.item-main{flex:1;min-width:0}.item-main strong{display:block;font-size:14px}.item-main small{display:block;color:var(--muted);font-size:12px;margin-top:4px;overflow-wrap:anywhere}.amt{font-size:13px;font-weight:750;white-space:nowrap}.delete{color:var(--red);background:#fff0ee;padding:7px 9px;min-height:34px;font-size:12px}.tools{display:flex;gap:8px;flex-wrap:wrap}.tools button{flex:1;background:#e8eee9;color:var(--green)}.empty{text-align:center;color:var(--muted);padding:20px 8px;font-size:14px}.notice{font-size:12px;color:var(--muted);line-height:1.5}.hidden{display:none!important}
+</style>
+</head>
+<body><main>
+<section class="hero">
+ <div class="brand"><span class="wallet">▣</span> RM Finance</div>
+ <div class="eyebrow">လက်ရှိလ ရဲ့ လက်ကျန်ငွေ</div><div class="balance" id="balance">RM 0.00</div>
+ <div class="stats"><div class="stat"><small>ဝင်ငွေ</small><strong class="in" id="income">RM 0.00</strong></div><div class="stat"><small>ထွက်ငွေ</small><strong class="out" id="expense">RM 0.00</strong></div></div>
+</section>
+<section class="card">
+ <h2>📅 လစဉ်စာရင်း</h2>
+ <div class="field"><label>ကြည့်လိုသောလ</label><input id="month" type="month"></div>
+ <div class="field"><label>လစဉ်လစာ (RM) — တစ်ကြိမ်ထည့်ပါ</label><input id="salary" type="number" min="0" step="0.01" placeholder="ဥပမာ 2500"></div>
+ <div class="notice">လစာကို ဒီနေရာမှာထည့်ထားရင် ဝင်ငွေမှတ်တမ်းထဲ လစာကို ထပ်မထည့်ပါနဲ့။</div>
+</section>
+<section class="card">
+ <h2>➕ ငွေစာရင်းအသစ်</h2>
+ <div class="tabs"><button class="tab active" data-kind="expense">ထွက်ငွေ</button><button class="tab" data-kind="income">ဝင်ငွေ</button><button class="tab" data-kind="saving">စုငွေ</button></div>
+ <form id="entry">
+  <div class="field"><label>ငွေပမာဏ (RM)</label><input id="amount" type="number" min="0.01" step="0.01" required placeholder="ဥပမာ 25.00"></div>
+  <div class="field"><label>အမျိုးအစား</label><select id="category"></select></div>
+  <div class="field"><label>ရက်စွဲ</label><input id="date" type="date" required></div>
+  <div class="field"><label>မှတ်ချက် (ရွေးချယ်နိုင်)</label><input id="note" maxlength="100" placeholder="ဥပမာ — နေ့လယ်စာ"></div>
+  <button class="primary" type="submit">စာရင်းသိမ်းမယ်</button>
+ </form>
+</section>
+<section class="card">
+ <h2>📊 လစဉ်အကျဉ်းချုပ်</h2>
+ <div class="summary-row"><span>လစာ + အခြားဝင်ငွေ</span><strong id="sumIncome">RM 0.00</strong></div>
+ <div class="summary-row"><span>အသုံးစရိတ်</span><strong id="sumExpense">RM 0.00</strong></div>
+ <div class="summary-row"><span>စုငွေ</span><strong id="sumSaving">RM 0.00</strong></div>
+ <div class="summary-row"><strong>လက်ကျန်ငွေ</strong><strong id="sumBalance">RM 0.00</strong></div>
+ <div class="field" style="margin-top:12px"><label>လစဉ်စုငွေပန်းတိုင် (RM)</label><input id="goal" type="number" min="0" step="0.01" value="500"></div>
+ <div class="row" style="font-size:13px;margin-bottom:7px"><span>စုငွေပန်းတိုင် ပြည့်မီမှု</span><strong id="goalPct">0%</strong></div>
+ <div class="progress"><div class="bar" id="goalBar"></div></div>
+</section>
+<section class="card">
+ <div class="row"><h2 style="margin:0">🧾 မှတ်တမ်းများ</h2><span class="muted" id="count">0 ခု</span></div>
+ <div id="records" class="empty">မှတ်တမ်းမရှိသေးပါ။ အပေါ်ကနေ စထည့်နိုင်ပါတယ်။</div>
+</section>
+<section class="card">
+ <h2>💾 Backup / Restore</h2>
+ <div class="tools"><button id="export">စာရင်း Backup ထုတ်မယ်</button><button id="importBtn">Backup ပြန်သွင်းမယ်</button></div>
+ <input id="importFile" class="hidden" type="file" accept="application/json,.json">
+ <p class="notice">မှတ်တမ်းတွေကို ဒီ iPhone ရဲ့ browser ထဲမှာ သိမ်းထားပါတယ်။ Browser data ရှင်းလိုက်ရင် ပျောက်နိုင်လို့ Backup ကို ပုံမှန်ထုတ်ထားပါ။ ဒီ App က ဘဏ်အကောင့်နဲ့ မချိတ်ထားပါ။</p>
+</section>
+<p class="notice">RM Finance ကို ကိုယ်ပိုင်ငွေစာရင်းအတွက်သာ အသုံးပြုပါ။ ငွေစာရင်းတွေကို တခြားစက်သို့ အလိုအလျောက် မချိတ်ဆက်ပေးပါ။</p>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const categories={
+ expense:["အစားအသောက်","အိမ်လခ","ဖုန်းဘေလ်","သွားလာစရိတ်","စျေးဝယ်","အိမ်သုံးပစ္စည်း","အကြွေးဆပ်","အခြား"],
+ income:["အပိုဝင်ငွေ","အခြားဝင်ငွေ"],
+ saving:["စုငွေ","အရေးပေါ်ရန်ပုံငွေ","အခြားစုငွေ"]
+};
+let kind="expense", records=[];
+try{records=JSON.parse(localStorage.getItem("rmfinance_records")||"[]");if(!Array.isArray(records))records=[]}catch(e){records=[]}
+const today=new Date(), localDate=new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10);
+$("date").value=localDate;$("month").value=localDate.slice(0,7);
+$("salary").value=localStorage.getItem("rmfinance_salary_"+$("month").value)||"";
+$("goal").value=localStorage.getItem("rmfinance_goal")||"500";
+function money(n){return "RM "+Number(n||0).toLocaleString("en-MY",{minimumFractionDigits:2,maximumFractionDigits:2})}
+function save(){localStorage.setItem("rmfinance_records",JSON.stringify(records))}
+function updateCategories(){ $("category").innerHTML=categories[kind].map(c=>`<option>${c}</option>`).join("");document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.kind===kind))}
+function render(){
+ const m=$("month").value||localDate.slice(0,7), salary=Number($("salary").value)||0;
+ localStorage.setItem("rmfinance_salary_"+m,String(salary));
+ localStorage.setItem("rmfinance_goal",$("goal").value||"0");
+ const list=records.filter(r=>r.date.slice(0,7)===m);
+ const inc=salary+list.filter(r=>r.kind==="income").reduce((s,r)=>s+r.amount,0);
+ const exp=list.filter(r=>r.kind==="expense").reduce((s,r)=>s+r.amount,0);
+ const sav=list.filter(r=>r.kind==="saving").reduce((s,r)=>s+r.amount,0);
+ const bal=inc-exp-sav;
+ $("balance").textContent=money(bal);$("income").textContent=money(inc);$("expense").textContent=money(exp);
+ $("sumIncome").textContent=money(inc);$("sumExpense").textContent=money(exp);$("sumSaving").textContent=money(sav);$("sumBalance").textContent=money(bal);
+ $("sumBalance").style.color=bal<0?"#b94a3d":"#246e47";
+ const goal=Number($("goal").value)||0,pct=goal>0?Math.min(100,Math.max(0,sav/goal*100)):0;
+ $("goalPct").textContent=pct.toFixed(0)+"%";$("goalBar").style.width=pct+"%";
+ $("count").textContent=list.length+" ခု";
+ const rec=$("records");
+ if(!list.length){rec.className="empty";rec.textContent="ဒီလအတွက် မှတ်တမ်းမရှိသေးပါ။";return}
+ rec.className="";
+ rec.innerHTML=list.slice().sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id).map(r=>{
+ const sym=r.kind==="income"?"+":"−",icon=r.kind==="income"?"↙":r.kind==="saving"?"🐷":"🛍️",color=r.kind==="income"?"#24734a":r.kind==="saving"?"#6a6f75":"#b94a3d";
+ return `<div class="item"><div class="bubble">${icon}</div><div class="item-main"><strong>${esc(r.category)}</strong><small>${esc(r.date)}${r.note?" · "+esc(r.note):""}</small></div><div class="amt" style="color:${color}">${sym}${money(r.amount)}</div><button class="delete" data-del="${r.id}" aria-label="ဖျက်မယ်">ဖျက်</button></div>`;
+ }).join("");
+ rec.querySelectorAll("[data-del]").forEach(b=>b.addEventListener("click",()=>{if(confirm("ဒီမှတ်တမ်းကို ဖျက်မှာ သေချာပါသလား?")){records=records.filter(r=>String(r.id)!==b.dataset.del);save();render()}}));
+}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{kind=b.dataset.kind;updateCategories()}));
+$("entry").addEventListener("submit",e=>{
+ e.preventDefault();const amount=Number($("amount").value),date=$("date").value;
+ if(!Number.isFinite(amount)||amount<=0||!date)return;
+ records.push({id:Date.now(),kind,amount,category:$("category").value,date,note:$("note").value.trim()});
+ save();$("amount").value="";$("note").value="";$("month").value=date.slice(0,7);
+ if($("month").value) $("salary").value=localStorage.getItem("rmfinance_salary_"+$("month").value)||$("salary").value;
+ render();
+});
+$("month").addEventListener("change",()=>{$("salary").value=localStorage.getItem("rmfinance_salary_"+$("month").value)||"";render()});
+["salary","goal"].forEach(id=>$(id).addEventListener("input",render));
+$("export").addEventListener("click",()=>{
+ const data={app:"RM Finance",version:1,records,salaries:Object.keys(localStorage).filter(k=>k.startsWith("rmfinance_salary_")).reduce((o,k)=>(o[k]=localStorage.getItem(k),o),{}),goal:$("goal").value};
+ const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="RM-Finance-Backup.json";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+});
+$("importBtn").addEventListener("click",()=>$("importFile").click());
+$("importFile").addEventListener("change",async e=>{
+ const f=e.target.files[0];if(!f)return;
+ try{const d=JSON.parse(await f.text());if(!Array.isArray(d.records))throw new Error("Invalid");if(!confirm("Backup က လက်ရှိစာရင်းကို အစားထိုးပါမယ်။ ဆက်လုပ်မလား?"))return;
+ records=d.records.filter(r=>r&&typeof r.amount==="number"&&r.date&&r.kind);save();
+ if(d.salaries)Object.entries(d.salaries).forEach(([k,v])=>{if(k.startsWith("rmfinance_salary_"))localStorage.setItem(k,String(v))});
+ $("goal").value=d.goal||"500";render();alert("Backup ပြန်သွင်းပြီးပါပြီ။");
+ }catch(err){alert("Backup ဖိုင်ကို ဖတ်မရပါ။ မှန်ကန်တဲ့ RM Finance Backup JSON ကိုရွေးပါ။")}
+ e.target.value="";
+});
+updateCategories();render();
+</script>
+</body></html>
